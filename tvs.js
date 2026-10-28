@@ -32,7 +32,6 @@ const TVS = [
         <li><b>1929:</b> imagem de Elma Farnsworth, de olhos fechados.
           <a href="https://en.wikipedia.org/wiki/Philo_Farnsworth">Wikipedia</a></li>
       </ul>
-      <p><b>Controles:</b> os botões estão sobre a foto. Ligar vem da chave visível na foto. Os marcados com * (brilho, foco e sincronismo) são hipótese, sem fonte para este aparelho. Gire arrastando, com a roda do mouse ou com as setas.</p>
       <p>Tela: tubo de raios catódicos chamado "image oscillite".
         <a href="https://en.wikipedia.org/wiki/Philo_Farnsworth">Wikipedia</a></p>`,
     canais: [
@@ -81,15 +80,12 @@ const TVS = [
       <h2>Telefunken E1 (1939)</h2>
       <p>Receptor "Einheits-Fernseh-Empfänger E1", 441 linhas, 25 quadros entrelaçados.
         <a href="https://en.wikipedia.org/wiki/441-line_television_system">Wikipedia</a></p>
-      <p><b>Os vídeos abaixo são exemplos.</b> Não são transmissões de TV da época. Nenhum efeito de resolução foi aplicado.
-        Suásticas e saudações nazistas foram tampadas.</p>
       <ul>
-        <li><b>Kater Lampe</b> (1936), filme inteiro. Na TV, em 6/1/1938, passou 21:18–21:51, ou seja, um trecho
+        <li><b>Kater Lampe</b> (1936). Na TV, em 6/1/1938, das 21:18 às 21:51
           (<a href="https://de.wikipedia.org/wiki/Deutscher_Fernseh_Rundfunk">Wikipedia</a>).
           Arquivo: <a href="https://archive.org/details/kater-lampe-1936">Archive.org</a></li>
-        <li><b>Abertura das Olimpíadas de Berlim</b> (1936): vídeo colorizado que você baixou, de origem que não sei. Não é a transmissão de TV de 1936.</li>
-      </ul>
-      <p><b>Controles:</b> todos os botões sobre a foto são hipótese (*), sem fonte para este aparelho. O aparelho recebia um único canal, então não há botão de canal. Os botões "Vídeo" abaixo trocam o exemplo.</p>`,
+        <li><b>Abertura das Olimpíadas de Berlim</b> (1936).</li>
+      </ul>`,
     canais: [
       { tipo: "video", partes: ["video/kater-lampe-parts/kater-lampe-00.mp4", "video/kater-lampe-parts/kater-lampe-01.mp4", "video/kater-lampe-parts/kater-lampe-02.mp4", "video/kater-lampe-parts/kater-lampe-03.mp4", "video/kater-lampe-parts/kater-lampe-04.mp4", "video/kater-lampe-parts/kater-lampe-05.mp4", "video/kater-lampe-parts/kater-lampe-06.mp4", "video/kater-lampe-parts/kater-lampe-07.mp4", "video/kater-lampe-parts/kater-lampe-08.mp4", "video/kater-lampe-parts/kater-lampe-09.mp4", "video/kater-lampe-parts/kater-lampe-10.mp4", "video/kater-lampe-parts/kater-lampe-11.mp4", "video/kater-lampe-parts/kater-lampe-12.mp4", "video/kater-lampe-parts/kater-lampe-13.mp4", "video/kater-lampe-parts/kater-lampe-14.mp4", "video/kater-lampe-parts/kater-lampe-15.mp4", "video/kater-lampe-parts/kater-lampe-16.mp4", "video/kater-lampe-parts/kater-lampe-17.mp4", "video/kater-lampe-parts/kater-lampe-18.mp4", "video/kater-lampe-parts/kater-lampe-19.mp4", "video/kater-lampe-parts/kater-lampe-20.mp4", "video/kater-lampe-parts/kater-lampe-21.mp4", "video/kater-lampe-parts/kater-lampe-22.mp4", "video/kater-lampe-parts/kater-lampe-23.mp4", "video/kater-lampe-parts/kater-lampe-24.mp4"] },
       { tipo: "video", partes: ["video/olimpiada-parts/olimpiada-00.mp4", "video/olimpiada-parts/olimpiada-01.mp4", "video/olimpiada-parts/olimpiada-02.mp4"] }
@@ -104,5 +100,35 @@ const TVS = [
     ],
     rotulos: { canal: { nome: "vídeo", anterior: "Vídeo anterior", proximo: "Próximo vídeo" } },
     funcoes: ["canal"]
+  }
+  ,
+  {
+    id: "ct100",
+    nome: "RCA CT-100",
+    ano: 1954,
+    imagem: IMG.ct100,
+    largura: 520,
+    tela: { x: 35.2, y: 25.5, w: 33.5, h: 23.5, formato: "oval" },
+    texto: `
+      <h2>RCA CT-100 (1954)</h2>
+      <ul>
+        <li><b>Abril de 1954:</b> lançamento por US$ 1.000, a primeira TV colorida produzida em massa. Tubo 15GP22, de 15 polegadas, e 36 válvulas.
+          <a href="https://en.wikipedia.org/wiki/RCA_CT-100">Wikipedia</a></li>
+        <li><b>1/1/1954:</b> Desfile das Rosas, a primeira transmissão colorida nacional, da NBC.
+          <a href="https://en.wikipedia.org/wiki/1954_in_American_television">Wikipedia</a></li>
+        <li><b>Producers' Showcase</b> (NBC, a partir de 18/10/1954, em cores compatíveis): <i>The Petrified Forest</i> e <i>Our Town</i>, ambos de 1955. As cópias existentes são em preto e branco, e as cores aqui foram inventadas por IA.
+          <a href="https://archive.org/details/proase-s2-e-01-thkin-our-telen-hy-ma55">Archive.org</a></li>
+        <li><b>Controles:</b> na frente, canal e sintonia fina à direita, brilho e liga/volume à esquerda. Saturação, contraste e matiz, foco e convergência ficam atrás da tampa e na lateral.
+          <a href="https://antiqueradio.org/RCACT-100Television.htm">antiqueradio.org</a></li>
+      </ul>`,
+    canais: [
+      { tipo: "video", partes: ["video/our-town-cor/our-town-cor-00.mp4", "video/our-town-cor/our-town-cor-01.mp4", "video/our-town-cor/our-town-cor-02.mp4", "video/our-town-cor/our-town-cor-03.mp4", "video/our-town-cor/our-town-cor-04.mp4", "video/our-town-cor/our-town-cor-05.mp4", "video/our-town-cor/our-town-cor-06.mp4", "video/our-town-cor/our-town-cor-07.mp4", "video/our-town-cor/our-town-cor-08.mp4", "video/our-town-cor/our-town-cor-09.mp4", "video/our-town-cor/our-town-cor-10.mp4", "video/our-town-cor/our-town-cor-11.mp4", "video/our-town-cor/our-town-cor-12.mp4", "video/our-town-cor/our-town-cor-13.mp4", "video/our-town-cor/our-town-cor-14.mp4", "video/our-town-cor/our-town-cor-15.mp4", "video/our-town-cor/our-town-cor-16.mp4", "video/our-town-cor/our-town-cor-17.mp4", "video/our-town-cor/our-town-cor-18.mp4", "video/our-town-cor/our-town-cor-19.mp4", "video/our-town-cor/our-town-cor-20.mp4", "video/our-town-cor/our-town-cor-21.mp4", "video/our-town-cor/our-town-cor-22.mp4"] },
+      { tipo: "video", partes: ["video/petrified-forest-cor/petrified-forest-cor-00.mp4", "video/petrified-forest-cor/petrified-forest-cor-01.mp4", "video/petrified-forest-cor/petrified-forest-cor-02.mp4", "video/petrified-forest-cor/petrified-forest-cor-03.mp4", "video/petrified-forest-cor/petrified-forest-cor-04.mp4", "video/petrified-forest-cor/petrified-forest-cor-05.mp4", "video/petrified-forest-cor/petrified-forest-cor-06.mp4", "video/petrified-forest-cor/petrified-forest-cor-07.mp4", "video/petrified-forest-cor/petrified-forest-cor-08.mp4", "video/petrified-forest-cor/petrified-forest-cor-09.mp4", "video/petrified-forest-cor/petrified-forest-cor-10.mp4", "video/petrified-forest-cor/petrified-forest-cor-11.mp4", "video/petrified-forest-cor/petrified-forest-cor-12.mp4", "video/petrified-forest-cor/petrified-forest-cor-13.mp4", "video/petrified-forest-cor/petrified-forest-cor-14.mp4", "video/petrified-forest-cor/petrified-forest-cor-15.mp4", "video/petrified-forest-cor/petrified-forest-cor-16.mp4", "video/petrified-forest-cor/petrified-forest-cor-17.mp4", "video/petrified-forest-cor/petrified-forest-cor-18.mp4", "video/petrified-forest-cor/petrified-forest-cor-19.mp4", "video/petrified-forest-cor/petrified-forest-cor-20.mp4", "video/petrified-forest-cor/petrified-forest-cor-21.mp4", "video/petrified-forest-cor/petrified-forest-cor-22.mp4"] }
+    ],
+    botoes: [
+      { funcao: "volume", liga: true, tipo: "knob", x: 29.7, y: 62.9, tam: 6.2, texto: "LIGA / VOLUME", rx: 29.7, ry: 70.5 },
+      { funcao: "canal", tipo: "knob", x: 73.5, y: 63.8, tam: 8.2, texto: "CANAL", rx: 73.5, ry: 72 }
+    ],
+    funcoes: ["brilho", "contraste", "saturacao", "matiz", "foco"]
   }
 ];

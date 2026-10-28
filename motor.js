@@ -85,8 +85,8 @@ function desenharCanal() {
 
 // brilho, foco e sincronismo mexem no que aparece na tela
 function aplicarAjustes() {
-  const { tela, chuvisco, brilho, contraste, foco, sinc, midia, volume } = estado;
-  tela.style.filter = `brightness(${brilho}) contrast(${contraste}) blur(${(1 - foco) * 6}px)`;
+  const { tela, chuvisco, brilho, contraste, saturacao, matiz, foco, sinc, midia, volume } = estado;
+  tela.style.filter = `brightness(${brilho}) contrast(${contraste}) saturate(${saturacao}) hue-rotate(${matiz}deg) blur(${(1 - foco) * 6}px)`;
   if (midia) midia.volume = volume;
   [...tela.children].forEach(c => { if (c !== chuvisco) c.style.transform = `translateY(${(sinc - 50) * 2}%)`; });
 }
@@ -123,6 +123,9 @@ const FUNCOES = {
   brilho: () => [ajuste("Brilho", 0.3, 1.5, 0.05, "brilho")],
   foco: () => [ajuste("Foco", 0, 1, 0.05, "foco")],
   sincronismo: () => [ajuste("Sincronismo", 0, 100, 1, "sinc")],
+  contraste: () => [ajuste("Contraste", 0.5, 1.6, 0.05, "contraste")],
+  saturacao: () => [ajuste("Saturação de cor", 0, 2.5, 0.05, "saturacao")],
+  matiz: () => [ajuste("Matiz", -60, 60, 1, "matiz")],
   chuvisco() { return []; }, // usada por ligar/canal; sem botão próprio
   "tela-cheia"() {
     return [botao("Tela cheia", () => palco.requestFullscreen())];
@@ -194,11 +197,11 @@ function montarBotoes(tv) {
     // knob: arrastar, rolar a roda ou usar as setas
     const acao = ACOES[b.funcao];
     const n = tv.canais.length;
-    const ler = () => b.funcao === "imagem" ? estado.canal / Math.max(n - 1, 1)
+    const ler = () => (b.funcao === "imagem" || b.funcao === "canal") ? estado.canal / Math.max(n - 1, 1)
       : (estado[acao.campo] - acao.min) / (acao.max - acao.min);
     const escrever = v => {
       v = Math.min(1, Math.max(0, v));
-      if (b.funcao === "imagem") {
+      if ((b.funcao === "imagem" || b.funcao === "canal")) {
         const i = Math.round(v * (n - 1));
         v = i / Math.max(n - 1, 1);
         if (i !== estado.canal) { estado.canal = i; desenharCanal(); info.textContent = `${rotulo(tv)} — imagem ${i + 1}`; }
@@ -211,12 +214,22 @@ function montarBotoes(tv) {
     el.style.setProperty("--ang", -135 + ler() * 270 + "deg");
     let inicio;
     el.onpointerdown = e => { el.setPointerCapture(e.pointerId); inicio = { x: e.clientX, y: e.clientY, v: ler() }; el.style.cursor = "grabbing"; };
-    el.onpointermove = e => { if (inicio) escrever(inicio.v + ((e.clientX - inicio.x) - (e.clientY - inicio.y)) / 150); };
-    el.onpointerup = () => { inicio = null; el.style.cursor = ""; };
-    el.onwheel = e => { e.preventDefault(); escrever(ler() - Math.sign(e.deltaY) * (b.funcao === "imagem" ? 1 / Math.max(n - 1, 1) : 0.05)); };
+    el.onpointermove = e => { if (inicio && Math.hypot(e.clientX - inicio.x, e.clientY - inicio.y) > 4) moveu = true; if (inicio) escrever(inicio.v + ((e.clientX - inicio.x) - (e.clientY - inicio.y)) / 150); };
+    let moveu = false;
+    el.onpointerup = async () => {
+      el.style.cursor = "";
+      const toque = inicio && !moveu;
+      inicio = null; moveu = false;
+      if (toque && b.liga) {
+        estado.ligada = !estado.ligada;
+        if (estado.ligada) await mostrarChuvisco(400);
+        desenharCanal();
+      }
+    };
+    el.onwheel = e => { e.preventDefault(); escrever(ler() - Math.sign(e.deltaY) * ((b.funcao === "imagem" || b.funcao === "canal") ? 1 / Math.max(n - 1, 1) : 0.05)); };
     el.onkeydown = e => {
       const d = { ArrowRight: 1, ArrowUp: 1, ArrowLeft: -1, ArrowDown: -1 }[e.key];
-      if (d) { e.preventDefault(); escrever(ler() + d * (b.funcao === "imagem" ? 1 / Math.max(n - 1, 1) : 0.05)); }
+      if (d) { e.preventDefault(); escrever(ler() + d * ((b.funcao === "imagem" || b.funcao === "canal") ? 1 / Math.max(n - 1, 1) : 0.05)); }
     };
   });
 }
@@ -227,6 +240,7 @@ function abrirTV(i) {
   const tv = TVS[i];
   [...abas.children].forEach((b, j) => b.classList.toggle("ativa", i === j));
   palco.innerHTML = ""; controles.innerHTML = "";
+  palco.style.width = tv.largura ? `min(90vw, ${tv.largura}px)` : "";
 
   if (tv.imagem) {
     const img = document.createElement("img"); img.src = tv.imagem; palco.append(img);
@@ -238,11 +252,12 @@ function abrirTV(i) {
   Object.assign(tela.style, { left: tv.tela.x + "%", top: tv.tela.y + "%", width: tv.tela.w + "%", height: tv.tela.h + "%" });
   if (tv.tela.formato === "redondo") tela.style.borderRadius = "50%";
   if (tv.tela.formato === "arredondado") tela.style.borderRadius = "7% / 9%";
+  if (tv.tela.formato === "oval") tela.style.borderRadius = "42% / 52%";
   const chuvisco = document.createElement("canvas"); chuvisco.id = "chuvisco";
   tela.append(chuvisco); palco.append(tela);
   ruido = iniciarChuvisco(chuvisco);
 
-  estado = { tv, tela, chuvisco, canal: 0, ligada: false, volume: 0.5, midia: null, brilho: 1, contraste: 1, foco: 1, sinc: 50 };
+  estado = { tv, tela, chuvisco, canal: 0, ligada: false, volume: 0.5, midia: null, brilho: 1, contraste: 1, saturacao: 1, matiz: 0, foco: 1, sinc: 50 };
   // "botoes" ficam sobre a foto; "funcoes" ficam em um painel abaixo
   if (tv.botoes) montarBotoes(tv);
   tv.funcoes.forEach(f => FUNCOES[f]().forEach(el => controles.append(el)));
