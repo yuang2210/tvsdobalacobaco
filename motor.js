@@ -61,11 +61,72 @@ function escalarJogo() {
 addEventListener("resize", escalarJogo);
 new ResizeObserver(escalarJogo).observe(palco);
 
+// tela inicial simulada de um serviço que não deixa o site abrir dentro de um iframe: só o nome, a cor e retângulos
+// com títulos genéricos, sem logotipo nem capas de verdade
+function desenharSimulacao(c) {
+  const s = document.createElement("div");
+  s.className = "sim";
+  s.style.setProperty("--cor", c.cor || "#888");
+  const topo = document.createElement("div");
+  topo.className = "sim-topo";
+  const nome = document.createElement("span");
+  nome.className = "sim-nome"; nome.textContent = c.nome;
+  topo.append(nome);
+  ["Início", "Séries", "Filmes", "Minha lista"].forEach(t => { const a = document.createElement("span"); a.textContent = t; topo.append(a); });
+  s.append(topo);
+  ["Continuar assistindo", "Em alta"].forEach(titulo => {
+    const linha = document.createElement("div");
+    const h = document.createElement("div");
+    h.className = "sim-titulo"; h.textContent = titulo;
+    const cartoes = document.createElement("div");
+    cartoes.className = "sim-cartoes";
+    for (let i = 1; i <= 6; i++) { const k = document.createElement("div"); k.className = "sim-cartao"; k.textContent = `Título ${i}`; cartoes.append(k); }
+    linha.append(h, cartoes); s.append(linha);
+  });
+  const rodape = document.createElement("div");
+  rodape.className = "sim-rodape";
+  rodape.append("Simulação da tela inicial: o site oficial não permite abrir aqui. ");
+  const a = document.createElement("a");
+  a.href = c.src; a.target = "_blank"; a.rel = "noopener noreferrer"; a.textContent = "Abrir o site oficial";
+  rodape.append(a);
+  s.append(rodape);
+  return s;
+}
+
+// menu inicial de uma smart TV (tv.menu): uma grade de atalhos, um por canal, escolhida com as setas e o OK do controle
+function desenharMenu() {
+  const m = document.createElement("div");
+  m.className = "menu-tv";
+  const marca = document.createElement("div");
+  marca.className = "menu-tv-marca"; marca.textContent = estado.tv.nome;
+  const faixa = document.createElement("div");
+  faixa.className = "menu-tv-faixa";
+  estado.tv.canais.forEach((c, i) => {
+    const t = document.createElement("div");
+    t.className = "menu-tv-item" + (i === estado.sel ? " sel" : "");
+    t.textContent = c.nome || `Canal ${i + 1}`;
+    t.onclick = () => abrirDoMenu(i);
+    faixa.append(t);
+  });
+  m.append(marca, faixa);
+  return m;
+}
+
+function abrirDoMenu(i) {
+  estado.canal = estado.sel = i; estado.emMenu = false;
+  desenharCanal();
+  info.textContent = `${rotulo(estado.tv)} — ${estado.tv.canais[i].nome || "canal " + (i + 1)}`;
+}
+
 function desenharCanal() {
   const { tela, tv, canal, ligada } = estado;
   [...tela.children].forEach(e => { if (e !== estado.chuvisco) e.remove(); });
   estado.midia = null;
+  const acabouDeLigar = ligada && !estado.eraLigada;
+  estado.eraLigada = ligada;
   if (!ligada) return;
+  if (acabouDeLigar && tv.menu) estado.emMenu = true;
+  if (tv.menu && estado.emMenu) { tela.insertBefore(desenharMenu(), estado.chuvisco); aplicarAjustes(); return; }
   const c = tv.canais[canal];
   let el;
   if (c.tipo === "video") {
@@ -86,6 +147,8 @@ function desenharCanal() {
     el = document.createElement("iframe");
     el.src = `https://www.youtube.com/embed/${id}?autoplay=1`;
     el.allow = "autoplay; fullscreen";
+  } else if (c.tipo === "simulacao") {
+    el = desenharSimulacao(c);
   } else if (c.tipo === "pagina") {
     // vale para um jogo em HTML (ex.: "jogo/index.html") ou um site que aceite ser incorporado
     el = document.createElement("iframe"); el.src = c.src;
@@ -172,9 +235,32 @@ async function teclaDoControle(acao) {
     return;
   }
   if (!estado.ligada) return;
+  const noMenu = estado.tv.menu && estado.emMenu;
+  if (acao === "home" || acao === "voltar") {
+    if (!estado.tv.menu) return;
+    estado.emMenu = true; estado.sel = estado.canal; desenharCanal();
+    info.textContent = rotulo(estado.tv);
+    return;
+  }
+  if (acao === "esq" || acao === "dir") {
+    if (!noMenu) return;
+    const n = estado.tv.canais.length;
+    estado.sel = (estado.sel + (acao === "dir" ? 1 : -1) + n) % n;
+    desenharCanal();
+    return;
+  }
+  if (acao === "cima" || acao === "baixo") {
+    // o menu tem 5 atalhos por linha
+    if (!noMenu) return;
+    const novo = estado.sel + (acao === "baixo" ? 5 : -5);
+    if (novo >= 0 && novo < estado.tv.canais.length) { estado.sel = novo; desenharCanal(); }
+    return;
+  }
+  if (acao === "ok") { if (noMenu) abrirDoMenu(estado.sel); return; }
   if (acao.startsWith("canal")) {
     const n = estado.tv.canais.length;
     estado.canal = (estado.canal + (acao === "canal+" ? 1 : -1) + n) % n;
+    estado.emMenu = false;
     await mostrarChuvisco(250);
     desenharCanal();
     info.textContent = `${rotulo(estado.tv)} — canal ${estado.canal + 1}`;
@@ -195,6 +281,23 @@ estilo.textContent = `
     box-shadow: 0 0 0 1px #000; border-radius: 2px; transform-origin: 50% 100%; transform: rotate(var(--ang)); }
   .botao-img.chave { border-radius: 6px; cursor: pointer; }
   .botao-img:hover, .botao-img:focus-visible { outline: 2px solid rgba(255, 233, 160, .8); outline-offset: 1px; }
+  .menu-tv { display: flex; flex-direction: column; justify-content: space-between; padding: 4cqw; box-sizing: border-box;
+    background: radial-gradient(ellipse at 30% 20%, #2c2c40, #0a0a12 70%); color: #fff; font-family: sans-serif; }
+  .menu-tv-marca { font-size: 2.2cqw; font-weight: 700; letter-spacing: .04em; opacity: .9; }
+  .menu-tv-faixa { display: flex; flex-wrap: wrap; gap: 1.2cqw; }
+  .menu-tv-item { flex: 0 0 calc((100% - 4.8cqw) / 5); min-width: 0; height: 5.2cqw; border-radius: .8cqw; background: #3a3a4c; display: flex; align-items: center;
+    justify-content: center; text-align: center; padding: .4cqw; box-sizing: border-box; font-size: 1.3cqw; font-weight: 600; cursor: pointer; }
+  .menu-tv-item.sel { background: #a50034; outline: .25cqw solid #fff; }
+  .sim { background: #101014; color: #fff; font-family: sans-serif; padding: 2cqw 3cqw; box-sizing: border-box;
+    display: flex; flex-direction: column; gap: 1.6cqw; overflow: hidden; }
+  .sim-topo { display: flex; align-items: center; gap: 1.8cqw; font-size: 1.1cqw; opacity: .9; }
+  .sim-nome { font-size: 2.2cqw; font-weight: 800; color: var(--cor); margin-right: 2cqw; }
+  .sim-titulo { font-size: 1.3cqw; font-weight: 700; margin-bottom: .6cqw; }
+  .sim-cartoes { display: flex; gap: .8cqw; }
+  .sim-cartao { flex: 1; height: 7cqw; border-radius: .5cqw; font-size: .9cqw; display: flex; align-items: flex-end; padding: .5cqw;
+    box-sizing: border-box; background: linear-gradient(135deg, #3a3a46, #1b1b22); border-bottom: .3cqw solid var(--cor); }
+  .sim-rodape { font-size: .95cqw; opacity: .7; margin-top: auto; }
+  .sim-rodape a { color: #8cf; }
   .rotulo { position: absolute; transform: translate(-50%, -50%); background: #0c0c0c; color: #e8e2c8; font: 600 1.15cqw/1 sans-serif;
     padding: .3cqw .6cqw; letter-spacing: .05em; white-space: nowrap; border-radius: 2px; pointer-events: none; }
 `;
@@ -305,7 +408,7 @@ function abrirTV(i) {
   tela.append(chuvisco); palco.append(tela);
   ruido = iniciarChuvisco(chuvisco);
 
-  estado = { tv, tela, chuvisco, canal: 0, ligada: false, volume: 0.5, midia: null, brilho: 1, contraste: 1, saturacao: 1, matiz: 0, foco: 1, sinc: 50 };
+  estado = { tv, tela, chuvisco, canal: 0, sel: 0, emMenu: false, eraLigada: false, ligada: false, volume: 0.5, midia: null, brilho: 1, contraste: 1, saturacao: 1, matiz: 0, foco: 1, sinc: 50 };
   // "botoes" ficam sobre a foto; "funcoes" ficam em um painel abaixo
   if (tv.botoes) montarBotoes(tv);
   tv.funcoes.forEach(f => FUNCOES[f]().forEach(el => controles.append(el)));

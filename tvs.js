@@ -254,4 +254,57 @@ const TVS = [
     ],
     funcoes: ["ligar", "canal"]
   }
+  ,
+  {
+    id: "lg",
+    nome: "LG OLED65CX",
+    ano: 2020,
+    imagem: IMG.lg,
+    largura: 1100,
+    tela: { x: 7.9, y: 15.6, w: 57.6, h: 66.8 },
+    menu: true,
+    texto: `
+      <h2>LG OLED65CX (2020)</h2>
+      <ul>
+        <li><b>Janeiro de 2020:</b> a LG apresenta a série OLED CX no CES, com um tamanho novo de 48".
+          <a href="https://www.wepc.com/news/lg-reveal-cxtv">WePC</a></li>
+        <li><b>Março de 2020:</b> a LG divulga preços e datas de lançamento da linha OLED de 2020.
+          <a href="https://www.engadget.com/2020/03/17/lg-2020-4k-oled-pricing/">Engadget</a></li>
+        <li><b>Menu:</b> ao ligar, a TV mostra um menu de atalhos. No controle, as setas esquerda e direita escolhem, o OK abre, e HOME ou o botão de voltar retornam ao menu. CH ▲▼ trocam de canal direto.</li>
+        <li><b>Serviços de streaming:</b> Disney+, Paramount+, Crunchyroll e Pluto TV abrem a página deles dentro da tela. Netflix, Prime Video, Max, Apple TV+, Globoplay e o site do YouTube recusam ser abertos assim, então a TV mostra uma <b>simulação</b> da tela inicial, desenhada por mim, só com o nome, a cor e títulos genéricos, e um link para o site oficial. Eu testei isso em um Firefox sem login; as páginas reais mostram o que o site mostra para quem não entrou.</li>
+        <li><b>PokeTube, Google e Bing</b> abrem dentro da tela, sem outra aba. Clique na tela para usar o mouse e o teclado nesses sites; as setas do controle só mexem no menu da TV, não dentro deles. O Google entra pelo parâmetro <code>igu=1</code>, que não é documentado e pode parar de funcionar; a busca dele pode pedir uma verificação. A página inicial do Bing recusa ser incorporada, então o atalho abre uma busca já pronta ("pesquisar"), e dali você digita a sua.</li>
+      </ul>
+      <p>O modelo (OLED65CX, 65") vem do nome do arquivo da foto; não confirmei o tamanho. O controle é o Magic Remote da LG, que não precisa ser o original deste aparelho; POWER, CH ▲▼, as setas, o OK, o HOME e o voltar funcionam, e o VOLUME não mexe no vídeo do YouTube.</p>`,
+    canais: [
+      // tipo "simulacao": o site recusa abrir dentro de um iframe, então a TV mostra uma tela inicial desenhada, com títulos genéricos
+      { nome: "Netflix", tipo: "simulacao", cor: "#e50914", src: "https://www.netflix.com/br/" },
+      { nome: "Prime Video", tipo: "simulacao", cor: "#00a8e1", src: "https://www.primevideo.com/" },
+      { nome: "Disney+", tipo: "pagina", src: "https://www.disneyplus.com/pt-br", virtual: [1024, 576] },
+      { nome: "Max", tipo: "simulacao", cor: "#4d6bff", src: "https://www.max.com/br/pt" },
+      { nome: "Globoplay", tipo: "simulacao", cor: "#ff5252", src: "https://globoplay.globo.com/" },
+      { nome: "Apple TV+", tipo: "simulacao", cor: "#d0d0d8", src: "https://tv.apple.com/br" },
+      { nome: "Paramount+", tipo: "pagina", src: "https://www.paramountplus.com/br/", virtual: [1024, 576] },
+      { nome: "YouTube", tipo: "simulacao", cor: "#ff0000", src: "https://www.youtube.com/" },
+      { nome: "Crunchyroll", tipo: "pagina", src: "https://www.crunchyroll.com/pt-br", virtual: [1024, 576] },
+      { nome: "Pluto TV", tipo: "pagina", src: "https://pluto.tv/br", virtual: [1024, 576] },
+      { nome: "PokeTube", tipo: "pagina", src: "https://poketube.fun/", virtual: [1024, 576] },
+      { nome: "Google", tipo: "pagina", src: "https://www.google.com/webhp?igu=1", virtual: [1024, 576] },
+      { nome: "Bing", tipo: "pagina", src: "https://www.bing.com/search?q=pesquisar", virtual: [1024, 576] }
+    ],
+    botoes: [
+      { tipo: "tecla", acao: "ligar", x: 84.9, y: 12.6, w: 2.4, h: 4.8 },
+      { tipo: "tecla", acao: "vol+", x: 84.4, y: 35.6, w: 2.5, h: 5.2 },
+      { tipo: "tecla", acao: "vol-", x: 84.4, y: 42.2, w: 2.5, h: 4.4 },
+      { tipo: "tecla", acao: "canal+", x: 90.4, y: 35.8, w: 2.4, h: 5.2 },
+      { tipo: "tecla", acao: "canal-", x: 90.4, y: 42.2, w: 2.4, h: 4.4 },
+      { tipo: "tecla", acao: "home", x: 83.9, y: 46.7, w: 2.7, h: 4.6 },
+      { tipo: "tecla", acao: "cima", x: 87.3, y: 50.2, w: 2.9, h: 3.6 },
+      { tipo: "tecla", acao: "baixo", x: 87.3, y: 61.6, w: 2.9, h: 3.6 },
+      { tipo: "tecla", acao: "esq", x: 84.3, y: 55.8, w: 2.4, h: 5.2 },
+      { tipo: "tecla", acao: "dir", x: 90.5, y: 55.8, w: 2.5, h: 5.2 },
+      { tipo: "tecla", acao: "ok", x: 87.4, y: 55.8, w: 3.5, h: 7.6 },
+      { tipo: "tecla", acao: "voltar", x: 83.9, y: 65.1, w: 2.7, h: 4.6 }
+    ],
+    funcoes: ["ligar"]
+  }
 ];
