@@ -287,7 +287,7 @@ const TVS = [
       { nome: "YouTube", tipo: "simulacao", cor: "#ff0000", src: "https://www.youtube.com/" },
       { nome: "Crunchyroll", tipo: "pagina", src: "https://www.crunchyroll.com/pt-br", virtual: [1024, 576] },
       { nome: "Pluto TV", tipo: "pagina", src: "https://pluto.tv/br", virtual: [1024, 576] },
-      { nome: "PokeTube", tipo: "pagina", src: "https://poketube.fun/", virtual: [1024, 576] },
+      { nome: "PokeTube", tipo: "pagina", src: "https://poketube.fun/home/", virtual: [1024, 576] },
       { nome: "Google", tipo: "pagina", src: "https://www.google.com/webhp?igu=1", virtual: [1024, 576] },
       { nome: "Bing", tipo: "pagina", src: "https://www.bing.com/search?q=pesquisar", virtual: [1024, 576] }
     ],
