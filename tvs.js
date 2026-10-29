@@ -189,13 +189,13 @@ const TVS = [
         <li><b>18/9/1990:</b> o canal 2 passa um trecho de 1min39 do Jornal Nacional, da Globo, em gravação particular com a marca "Arquivo Marckezini". A data vem do título do arquivo; o Archive.org tem um item com o mesmo título.
           <a href="https://archive.org/details/documentario_20231116_2343">Archive.org</a></li>
         <li><b>Mega Drive no Brasil:</b> a Tectoy lança o console em dezembro de 1990.
-          <a href="https://en.wikipedia.org/wiki/Tectoy">Wikipedia</a>. O canal 3 é o Sonic, de um site de terceiros; clique na tela para jogar.</li>
+          <a href="https://en.wikipedia.org/wiki/Tectoy">Wikipedia</a>. O canal 3 é o Sonic, de um site de terceiros: clique em START GAME dentro da tela. Depois de apertar uma tecla do controle, clique na tela de novo para o teclado voltar ao jogo.</li>
       </ul>
       <p>* Os botões sobre a foto da TV são hipótese: os rótulos pequenos da frente não dá para ler. O controle ao lado é um de reposição da MXT, modelo G-29FM, e não o original deste aparelho; as teclas POWER, CHANNEL e VOLUME funcionam.</p>`,
     canais: [
       { tipo: "video", partes: Array.from({ length: 9 }, (_, i) => `video/ra-tim-bum-parts/ra-tim-bum-${String(i).padStart(2, "0")}.mp4`) },
       { tipo: "video", src: "video/jornal-nacional-1990.mp4" },
-      { tipo: "pagina", src: "https://megadrive-emulator.com/game/?game=Sonic_the_Hedgehog.bin" }
+      { tipo: "pagina", src: "https://megadrive-emulator.com/game/?game=Sonic_the_Hedgehog.bin", virtual: [640, 480] }
     ],
     // * = hipótese
     botoes: [
@@ -208,5 +208,50 @@ const TVS = [
     ],
     rotulos: { canal: { nome: "canal", anterior: "Canal −", proximo: "Canal +" } },
     funcoes: ["canal"]
+  }
+  ,
+  {
+    id: "samsung",
+    nome: "Samsung UN46B7000",
+    ano: 2009,
+    imagem: IMG.samsung,
+    largura: 960,
+    tela: { x: 6.7, y: 7.2, w: 45.5, h: 64.9 },
+    texto: `
+      <h2>Samsung UN46B7000 (2009)</h2>
+      <ul>
+        <li><b>Janeiro de 2009:</b> a Samsung anuncia no CES as séries 6000, 7000 e 8000 de TVs LCD com luz de fundo de LED. A série 7000 tem o UN55B7000 e o UN46B7000.
+          <a href="https://www.engadget.com/2009-01-07-samsung-stuns-with-6000-7000-and-8000-series-led-lcd-hdtvs.html">Engadget</a></li>
+        <li><b>Julho de 2009:</b> o Engadget testa o UN46B7000.
+          <a href="https://www.engadget.com/2009-07-23-samsung-un46b7000-led-backlit-lcd-review.html">Engadget</a></li>
+      </ul>
+      <p>Não confirmei a data em que a TV chegou às lojas, nem que foi a primeira com LED. A foto é de divulgação do modelo.</p>
+      <ul>
+        <li><b>20/1/2008:</b> estreia de Breaking Bad na AMC, segundo uma única fonte, a confirmar.
+          <a href="https://www.serienjunkies.de/news/serienjunkies-stichtag-jahren-breaking-105269.html">Serienjunkies</a>.
+          O canal passa uma cena em português, do canal "Breaking Bad em Português" no YouTube: "Jesse Pinkman acha que Gustavo Fring paga mal | Kafkiano".
+          <a href="https://www.youtube.com/watch?v=_7xmZljv0NU">YouTube</a></li>
+        <li><b>1/10/2006:</b> estreia de Dexter na Showtime; alguns resultados dão 7/10/2006, então a data não é unânime.
+          <a href="https://en.wikipedia.org/wiki/Dexter_(episode)">Wikipedia</a>.
+          O canal 2 passa uma cena em português, do canal oficial Paramount+ Brasil: "Doakes chega perto de descobrir tudo | Dexter".
+          <a href="https://www.youtube.com/watch?v=0-So4_O4lzc">YouTube</a></li>
+      </ul>
+      <p>O controle ao lado é um genérico da Samsung, e não sei se é o original deste modelo. POWER liga e desliga, CHANNEL troca de canal; o VOLUME não mexe no vídeo do YouTube.</p>
+      <p>Desculpa, não consegui colocar direto na TV. Clica no botão.</p>
+      <p><a href="https://nfsu2.xyz/" target="_blank" rel="noopener noreferrer" style="display:inline-block;background:#e8e8ee;color:#111;padding:10px 18px;border-radius:4px;text-decoration:none;font-weight:600">Abrir o Underground 2 Revived (projeto de fãs)</a></p>`,
+    canais: [
+      { tipo: "youtube", src: "_7xmZljv0NU" },
+      { tipo: "youtube", src: "0-So4_O4lzc" }
+    ],
+    rotulos: { canal: { nome: "canal", anterior: "Canal −", proximo: "Canal +" } },
+    // controle ao lado da TV: um genérico da Samsung, não necessariamente o original deste modelo
+    botoes: [
+      { tipo: "tecla", acao: "ligar", x: 91.7, y: 9.7, w: 2.6, h: 6.5 },
+      { tipo: "tecla", acao: "vol+", x: 83.8, y: 31.5, w: 2.3, h: 5.8 },
+      { tipo: "tecla", acao: "vol-", x: 81.3, y: 37.8, w: 2.3, h: 5.8 },
+      { tipo: "tecla", acao: "canal+", x: 87.8, y: 41.4, w: 2.3, h: 5.8 },
+      { tipo: "tecla", acao: "canal-", x: 85.5, y: 47.7, w: 2.3, h: 5.8 }
+    ],
+    funcoes: ["ligar", "canal"]
   }
 ];

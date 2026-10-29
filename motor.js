@@ -49,6 +49,18 @@ function mostrarChuvisco(ms) {
 }
 
 // ---------- tela ----------
+// iframe de jogo (canal com "virtual: [largura, altura]"): o START GAME do site só funciona com o iframe de pelo menos
+// uns 480x360, então ele é desenhado nesse tamanho e reduzido para caber na tela da TV
+function escalarJogo() {
+  const f = estado?.tela?.querySelector("iframe[data-virtual]");
+  if (!f) return;
+  const [w, h] = f.dataset.virtual.split("x").map(Number);
+  const k = Math.min(estado.tela.clientWidth / w, estado.tela.clientHeight / h);
+  Object.assign(f.style, { inset: "auto", left: "0", top: "0", width: w + "px", height: h + "px", transformOrigin: "0 0", transform: `scale(${k})` });
+}
+addEventListener("resize", escalarJogo);
+new ResizeObserver(escalarJogo).observe(palco);
+
 function desenharCanal() {
   const { tela, tv, canal, ligada } = estado;
   [...tela.children].forEach(e => { if (e !== estado.chuvisco) e.remove(); });
@@ -78,11 +90,13 @@ function desenharCanal() {
     // vale para um jogo em HTML (ex.: "jogo/index.html") ou um site que aceite ser incorporado
     el = document.createElement("iframe"); el.src = c.src;
     el.allow = "autoplay; fullscreen; gamepad";
+    if (c.virtual) el.dataset.virtual = c.virtual.join("x");
   } else {
     el = document.createElement("div"); el.innerHTML = c.conteudo;
   }
   tela.insertBefore(el, estado.chuvisco);
   aplicarAjustes();
+  escalarJogo();
 }
 
 // brilho, foco e sincronismo mexem no que aparece na tela
@@ -90,7 +104,7 @@ function aplicarAjustes() {
   const { tela, chuvisco, brilho, contraste, saturacao, matiz, foco, sinc, midia, volume } = estado;
   tela.style.filter = `brightness(${brilho}) contrast(${contraste}) saturate(${saturacao}) hue-rotate(${matiz}deg) blur(${(1 - foco) * 6}px)`;
   if (midia) midia.volume = volume;
-  [...tela.children].forEach(c => { if (c !== chuvisco) c.style.transform = `translateY(${(sinc - 50) * 2}%)`; });
+  [...tela.children].forEach(c => { if (c !== chuvisco && !c.dataset.virtual) c.style.transform = `translateY(${(sinc - 50) * 2}%)`; });
 }
 
 // ---------- funções (cada uma monta seus botões) ----------
@@ -174,8 +188,8 @@ async function teclaDoControle(acao) {
 const estilo = document.createElement("style");
 estilo.textContent = `
   #palco { container-type: inline-size; }
-  #botoes { position: absolute; inset: 0; }
-  .botao-img { position: absolute; transform: translate(-50%, -50%); touch-action: none; cursor: grab; }
+  #botoes { position: absolute; inset: 0; pointer-events: none; }
+  .botao-img { position: absolute; transform: translate(-50%, -50%); touch-action: none; cursor: grab; pointer-events: auto; }
   .botao-img.knob { border-radius: 50%; aspect-ratio: 1; }
   .botao-img.knob::before { content: ""; position: absolute; left: 46%; top: 6%; width: 8%; height: 44%; background: #ffe9a0;
     box-shadow: 0 0 0 1px #000; border-radius: 2px; transform-origin: 50% 100%; transform: rotate(var(--ang)); }
