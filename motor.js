@@ -64,6 +64,8 @@ function desenharCanal() {
     el.src = partes[0]; el.autoplay = true; el.playsInline = true;
     el.onended = () => { p = (p + 1) % partes.length; el.src = partes[p]; el.play(); };
     el.volume = estado.volume; estado.midia = el;
+  } else if (c.tipo === "odyssey") {
+    el = Sinais.criar();
   } else if (c.tipo === "imagem") {
     el = document.createElement("img"); el.src = c.src;
   } else if (c.tipo === "youtube") {
@@ -166,6 +168,8 @@ document.head.append(estilo);
 const ACOES = {
   brilho: { campo: "brilho", min: 0.3, max: 1.5 },
   contraste: { campo: "contraste", min: 0.5, max: 1.6 },
+  saturacao: { campo: "saturacao", min: 0, max: 2.5 },
+  matiz: { campo: "matiz", min: -60, max: 60 },
   volume: { campo: "volume", min: 0, max: 1 },
   foco: { campo: "foco", min: 0, max: 1 },
   sincronismo: { campo: "sinc", min: 0, max: 100 }

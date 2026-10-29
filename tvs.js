@@ -131,4 +131,43 @@ const TVS = [
     ],
     funcoes: ["brilho", "contraste", "saturacao", "matiz", "foco"]
   }
+  ,
+  {
+    id: "kv1310",
+    nome: "Sony Trinitron KV-1310",
+    ano: 1968,
+    imagem: IMG.kv1310,
+    largura: 640,
+    tela: { x: 13.6, y: 17.2, w: 55, h: 58.5, formato: "arredondado" },
+    texto: `
+      <h2>Sony Trinitron KV-1310 (1968)</h2>
+      <ul>
+        <li><b>15/4/1968:</b> a Sony apresenta o Trinitron, modelo KV-1310. Venda em pequena quantidade a partir de outubro de 1968.
+          <a href="https://spectrum.ieee.org/the-consumer-electronics-hall-of-fame-sony-trinitron">IEEE Spectrum</a> ·
+          <a href="https://avpreservation.si.edu/object/nmah_706163">Smithsonian</a></li>
+        <li><b>Magnavox Odyssey (1972):</b> o primeiro console doméstico, ligado à TV no canal 3 ou 4. Os 12 jogos que vinham nos EUA, de acordo com o manual original.
+          <a href="https://archive.org/details/manual-magnavox-odyssey">Manual no Archive.org</a> ·
+          <a href="https://en.wikipedia.org/wiki/Magnavox_Odyssey">Wikipedia</a></li>
+        <li><b>26/12/1967:</b> Magical Mystery Tour, dos Beatles, estreia na BBC1; reprise em cores na BBC Two em janeiro de 1968.
+          <a href="https://www.beatlesbible.com/1967/12/26/">Beatles Bible</a></li>
+        <li><b>16/11/1969:</b> o Creedence Clearwater Revival toca "Fortunate Son" no Ed Sullivan Show (CBS). A data é a que a maioria das fontes cita; uma outra lista dá 19/11 para outras músicas do mesmo programa.
+          <a href="https://www.edsullivan.com/press/page/2">Ed Sullivan</a> ·
+          <a href="https://www.goldminemag.com/music-history/flashback/see-creedence-clearwater-revival-play-fiery-fortunate-son-on-ed-sullivan-in-1969/">Goldmine</a></li>
+      </ul>
+      <p>As folhas de plástico são desenhos aproximados. Cartas, dados, fichas e tabuleiros dos jogos não estão incluídos.</p>`,
+    canais: [
+      { tipo: "odyssey" },
+      { tipo: "video", partes: Array.from({ length: 17 }, (_, i) => `video/magical-mystery-tour-parts/magical-mystery-tour-${String(i).padStart(2, "0")}.mp4`) },
+      { tipo: "video", src: "video/ccr-fortunate-son.mp4" }
+    ],
+    // * = hipótese: rótulos lidos na foto, sem fonte para este aparelho.
+    botoes: [
+      { funcao: "ligar", tipo: "chave", x: 85.4, y: 89.4, w: 5, h: 8, texto: "LIGAR*", rx: 85.4, ry: 84.6 },
+      { funcao: "matiz", tipo: "knob", x: 10.1, y: 89.4, tam: 6, texto: "MATIZ*", rx: 10.1, ry: 85 },
+      { funcao: "saturacao", tipo: "knob", x: 17.5, y: 89.4, tam: 6, texto: "COR*", rx: 17.5, ry: 85 },
+      { funcao: "brilho", tipo: "knob", x: 24.8, y: 89.4, tam: 6, texto: "BRILHO*", rx: 24.8, ry: 85 },
+      { funcao: "contraste", tipo: "knob", x: 32.2, y: 89.4, tam: 6, texto: "CONTRASTE*", rx: 32.2, ry: 85 }
+    ],
+    funcoes: ["canal"]
+  }
 ];
