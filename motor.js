@@ -149,6 +149,27 @@ function botao(texto, fn) {
   b.textContent = texto; b.onclick = fn; return b;
 }
 
+// teclas do controle remoto desenhado ao lado da TV: acao = "ligar" | "canal+" | "canal-" | "vol+" | "vol-"
+async function teclaDoControle(acao) {
+  if (acao === "ligar") {
+    estado.ligada = !estado.ligada;
+    if (estado.ligada) await mostrarChuvisco(400);
+    desenharCanal();
+    return;
+  }
+  if (!estado.ligada) return;
+  if (acao.startsWith("canal")) {
+    const n = estado.tv.canais.length;
+    estado.canal = (estado.canal + (acao === "canal+" ? 1 : -1) + n) % n;
+    await mostrarChuvisco(250);
+    desenharCanal();
+    info.textContent = `${rotulo(estado.tv)} — canal ${estado.canal + 1}`;
+  } else {
+    estado.volume = Math.min(1, Math.max(0, estado.volume + (acao === "vol+" ? 0.1 : -0.1)));
+    aplicarAjustes();
+  }
+}
+
 // ---------- botões desenhados sobre a foto ----------
 const estilo = document.createElement("style");
 estilo.textContent = `
@@ -186,6 +207,15 @@ function montarBotoes(tv) {
     el.style.left = b.x + "%"; el.style.top = b.y + "%";
     el.style.width = (b.w ?? b.tam) + "%";
     camada.append(rot, el);
+    if (!b.texto) rot.style.display = "none";
+
+    if (b.tipo === "tecla") {
+      el.style.aspectRatio = "auto";
+      el.style.height = b.h + "%";
+      el.style.cursor = "pointer";
+      el.onclick = () => teclaDoControle(b.acao);
+      return;
+    }
 
     if (b.tipo === "chave") {
       el.style.aspectRatio = "auto";

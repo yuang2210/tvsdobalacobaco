@@ -170,4 +170,43 @@ const TVS = [
     ],
     funcoes: ["canal"]
   }
+  ,
+  {
+    id: "gradiente",
+    nome: "Gradiente Next",
+    imagem: IMG.gradiente,
+    largura: 640,
+    tela: { x: 9.1, y: 14.1, w: 53.8, h: 48, formato: "arredondado" },
+    texto: `
+      <h2>Gradiente Next</h2>
+      <ul>
+        <li><b>Modelo e ano não confirmados.</b> A foto mostra o nome "Next" no canto e a marca Gradiente. Não achei ficha com o ano de fabricação, e este aparelho não é a TV de tela grande de 1990.</li>
+        <li><b>1989 e 1990:</b> a Gradiente compra a filial brasileira da Telefunken em 1989 e lança a primeira TV de tela grande do país em 1990.
+          <a href="https://www.tecmundo.com.br/mercado/124706-historia-gradiente-marca-historica-brasil-video.htm">TecMundo</a></li>
+        <li><b>5/2/1990:</b> estreia do Rá-Tim-Bum, da TV Cultura. O canal 1 passa o episódio de 6/2/1990.
+          <a href="https://en.wikipedia.org/wiki/R%C3%A1-Tim-Bum">Wikipedia</a> ·
+          <a href="https://archive.org/details/programa-ra-tim-bum-episodio-raro-06-02-1990">Archive.org</a></li>
+        <li><b>18/9/1990:</b> o canal 2 passa um trecho de 1min39 do Jornal Nacional, da Globo, em gravação particular com a marca "Arquivo Marckezini". A data vem do título do arquivo; o Archive.org tem um item com o mesmo título.
+          <a href="https://archive.org/details/documentario_20231116_2343">Archive.org</a></li>
+        <li><b>Mega Drive no Brasil:</b> a Tectoy lança o console em dezembro de 1990.
+          <a href="https://en.wikipedia.org/wiki/Tectoy">Wikipedia</a>. O canal 3 é o Sonic, de um site de terceiros; clique na tela para jogar.</li>
+      </ul>
+      <p>* Os botões sobre a foto da TV são hipótese: os rótulos pequenos da frente não dá para ler. O controle ao lado é um de reposição da MXT, modelo G-29FM, e não o original deste aparelho; as teclas POWER, CHANNEL e VOLUME funcionam.</p>`,
+    canais: [
+      { tipo: "video", partes: Array.from({ length: 9 }, (_, i) => `video/ra-tim-bum-parts/ra-tim-bum-${String(i).padStart(2, "0")}.mp4`) },
+      { tipo: "video", src: "video/jornal-nacional-1990.mp4" },
+      { tipo: "pagina", src: "https://megadrive-emulator.com/game/?game=Sonic_the_Hedgehog.bin" }
+    ],
+    // * = hipótese
+    botoes: [
+      { funcao: "ligar", tipo: "chave", x: 13.9, y: 69.8, w: 4.3, h: 5, texto: "LIGAR*", rx: 13.9, ry: 63.5 },
+      { tipo: "tecla", acao: "ligar", x: 80.5, y: 8.8, w: 4.3, h: 5.1 },
+      { tipo: "tecla", acao: "canal+", x: 80.7, y: 25.9, w: 3.7, h: 4.8 },
+      { tipo: "tecla", acao: "canal-", x: 80.7, y: 32.1, w: 3.7, h: 4.8 },
+      { tipo: "tecla", acao: "vol+", x: 93.9, y: 25.9, w: 4.3, h: 4.8 },
+      { tipo: "tecla", acao: "vol-", x: 93.9, y: 32.1, w: 4.3, h: 4.8 }
+    ],
+    rotulos: { canal: { nome: "canal", anterior: "Canal −", proximo: "Canal +" } },
+    funcoes: ["canal"]
+  }
 ];
